@@ -20,7 +20,6 @@
     }
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -28,5 +27,6 @@
         "tamasfe.even-better-toml"
       ]
     }
+  }
   }
 }

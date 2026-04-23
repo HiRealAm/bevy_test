@@ -164,6 +164,51 @@ open_web_demo() {
 main() {
     cd "$PROJECT_DIR"
 
+    # Check for command line argument (non-interactive mode)
+    if [[ $# -gt 0 ]]; then
+        choice="$1"
+        case $choice in
+            1)
+                setup_environment
+                build_project
+                ;;
+            2)
+                if [[ ! -f "$PROJECT_DIR/target/release/bevy_test" ]]; then
+                    log_warning "Project not built. Building first..."
+                    build_project
+                fi
+                run_native
+                ;;
+            3)
+                start_web_server
+                ;;
+            4)
+                open_web_demo
+                ;;
+            5)
+                setup_environment
+                build_project
+                start_web_server
+                log_info "Setup complete! The web demo is now running."
+                if is_codespaces; then
+                    WEB_URL=$(cat /tmp/web_demo_url.txt)
+                    log_success "Access your Bevy app at: $WEB_URL"
+                fi
+                exit 0
+                ;;
+            6)
+                log_info "Goodbye!"
+                exit 0
+                ;;
+            *)
+                log_error "Invalid choice: $choice. Use 1-6."
+                exit 1
+                ;;
+        esac
+        exit 0
+    fi
+
+    # Interactive mode
     while true; do
         show_menu
 
