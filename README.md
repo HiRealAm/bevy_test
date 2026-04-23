@@ -1,41 +1,58 @@
 # bevy_test
 
-Minimal Bevy app prepared for GitHub Codespaces.
+Starter Bevy example project prepared for GitHub Codespaces.
 
-## Run in Codespaces
+## Run
 
 ```bash
 cargo run
 ```
 
-If this is your first build in a new Codespace, Rust will download dependencies first.
+On first startup, Codespaces runs `.devcontainer/post-create.sh`, which installs native Linux dependencies for Bevy, writes a proxy-friendly Cargo config, and prefetches Rust crates.
 
-## What this app does
+## What this example includes
 
-- Starts a Bevy application
-- Loads default Bevy plugins
-- Spawns a 2D camera at startup
+- A windowed Bevy app (`Bevy Example Project`)
+- A simple controllable player square
+- Keyboard movement (`WASD` or arrow keys)
+- Movement bounds so the player stays on screen
 
-## Why it did not run here
+If no display server is available (`DISPLAY`/`WAYLAND_DISPLAY` unset), the app automatically runs in one-shot headless mode so the terminal command still succeeds.
 
-I ran a diagnosis in this environment and found two concrete blockers:
+## Proxy support
 
-1. **Cargo could not download crates**: requests to `https://index.crates.io/config.json` were blocked by proxy with `CONNECT tunnel failed, response 403` (observed on **2026-04-23**).
-2. **Likely missing native packages for Linux Bevy builds**: `libudev-dev`, `libasound2-dev`, `libxkbcommon-dev`, and `libwayland-dev` are not installed in this container.
+If your environment requires a proxy, set these in your Codespace (or VS Code terminal):
 
-Also, this shell is headless (`DISPLAY` is unset), so even after compiling, windowed Bevy execution may fail without a GUI/display forwarding setup.
+```bash
+export HTTPS_PROXY=http://proxy-host:port
+export HTTP_PROXY=http://proxy-host:port
+```
+
+If your company provides a Cargo registry mirror, set it before running the setup script:
+
+```bash
+export CARGO_REGISTRY_MIRROR=sparse+https://<your-artifactory-or-mirror>/
+```
+
+- With `CARGO_REGISTRY_MIRROR` set, the setup script configures Cargo to use that mirror.
+- Without it, the repo defaults to GitHub-backed registry index access (`protocol = "git"`) plus `git-fetch-with-cli`, which is often more reliable behind proxies.
+
+## Devcontainer dependencies installed
+
+- `pkg-config`
+- `libudev-dev`
+- `libasound2-dev`
+- `libxkbcommon-dev`
+- `libwayland-dev`
+- `libx11-dev`
+- `libxi-dev`
+- `libxcursor-dev`
+- `libxrandr-dev`
+- `libxinerama-dev`
+- `libgl1-mesa-dev`
 
 ## Quick diagnosis command
 
 ```bash
 ./scripts/diagnose_codespaces.sh
-```
-
-## Typical Codespaces fix
-
-```bash
-sudo apt-get update
-sudo apt-get install -y pkg-config libudev-dev libasound2-dev libxkbcommon-dev libwayland-dev
-cargo check
-cargo run
 ```
