@@ -8,6 +8,14 @@ Starter Bevy example project prepared for GitHub Codespaces.
 cargo run
 ```
 
+Or use the provided start script:
+
+```bash
+./scripts/start.sh
+```
+
+The start script automatically handles display setup and ensures the proper environment for running the Bevy app.
+
 On first startup, Codespaces runs `.devcontainer/post-create.sh`, which installs native Linux dependencies for Bevy, writes a proxy-friendly Cargo config, and prefetches Rust crates.
 
 ## What this example includes
