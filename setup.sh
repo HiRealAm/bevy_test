@@ -44,24 +44,29 @@ setup_environment() {
     pkill -9 rustc 2>/dev/null || true
     sleep 1
 
-    # Install system dependencies
+    # Install system dependencies (skip if already done recently)
     log_info "Installing system dependencies..."
-    sudo apt-get update
-    sudo apt-get install -y --no-install-recommends \
-        pkg-config \
-        libudev-dev \
-        libasound2-dev \
-        libxkbcommon-dev \
-        libxkbcommon-x11-0 \
-        libwayland-dev \
-        libx11-dev \
-        libxi-dev \
-        libxcursor-dev \
-        libxrandr-dev \
-        libxinerama-dev \
-        libgl1-mesa-dev \
-        xvfb \
-        python3
+    if ! command -v pkg-config &> /dev/null || [[ ! -f /usr/lib/x86_64-linux-gnu/libudev.so ]]; then
+        log_info "Running apt-get update and install..."
+        sudo -n apt-get update 2>/dev/null || sudo apt-get update 2>&1 | grep -v "^W:" || true
+        sudo -n apt-get install -y --no-install-recommends \
+            pkg-config \
+            libudev-dev \
+            libasound2-dev \
+            libxkbcommon-dev \
+            libxkbcommon-x11-0 \
+            libwayland-dev \
+            libx11-dev \
+            libxi-dev \
+            libxcursor-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libgl1-mesa-dev \
+            xvfb \
+            python3 || true
+    else
+        log_info "Required packages already installed, skipping apt-get"
+    fi
 
     # Install latest Rust if not present
     if ! command -v cargo &> /dev/null; then
