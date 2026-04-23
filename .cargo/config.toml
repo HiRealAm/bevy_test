@@ -1,0 +1,10 @@
+[net]
+git-fetch-with-cli = true
+retry = 5
+
+[http]
+multiplexing = false
+
+[registries.crates-io]
+protocol = "git"
+index = "https://github.com/rust-lang/crates.io-index"
