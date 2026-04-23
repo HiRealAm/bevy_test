@@ -39,6 +39,11 @@ is_codespaces() {
 setup_environment() {
     log_info "Setting up Bevy Test App environment..."
 
+    # Kill any stale cargo processes from previous failed builds
+    pkill -9 cargo 2>/dev/null || true
+    pkill -9 rustc 2>/dev/null || true
+    sleep 1
+
     # Install system dependencies
     log_info "Installing system dependencies..."
     sudo apt-get update
@@ -86,8 +91,10 @@ build_project() {
     log_info "Building Bevy project..."
     cd "$PROJECT_DIR"
 
-    # Clean any problematic lock files
+    # Clean any problematic lock files and cache directories
     rm -f Cargo.lock
+    find target -name ".cargo-lock" -delete 2>/dev/null || true
+    rm -rf target/.fingerprint 2>/dev/null || true
 
     cargo build --release
     log_success "Build complete!"
