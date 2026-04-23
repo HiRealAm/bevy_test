@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevy Test App - Web Version</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            background: #000;
+            display: block;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .controls p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bevy Test App - Web Canvas</h1>
+    <canvas id="gameCanvas" width="1024" height="640"></canvas>
+    <div class="controls">
+        <p>Use WASD or Arrow Keys to move the player</p>
+        <p>Player stays within bounds</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game state
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: 50,
+            speed: 280
+        };
+
+        const bounds = {
+            x: 460,
+            y: 260
+        };
+
+        // Input handling
+        const keys = {};
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+        });
+        document.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+
+        function update(deltaTime) {
+            // Movement
+            let dx = 0;
+            let dy = 0;
+
+            if (keys['KeyW'] || keys['ArrowUp']) dy -= 1;
+            if (keys['KeyS'] || keys['ArrowDown']) dy += 1;
+            if (keys['KeyA'] || keys['ArrowLeft']) dx -= 1;
+            if (keys['KeyD'] || keys['ArrowRight']) dx += 1;
+
+            // Normalize diagonal movement
+            if (dx !== 0 && dy !== 0) {
+                dx *= 0.707; // 1/sqrt(2)
+                dy *= 0.707;
+            }
+
+            player.x += dx * player.speed * deltaTime;
+            player.y += dy * player.speed * deltaTime;
+
+            // Keep player in bounds
+            player.x = Math.max(player.size/2, Math.min(canvas.width - bounds.x + canvas.width/2 - player.size/2, player.x));
+            player.y = Math.max(player.size/2, Math.min(canvas.height - bounds.y + canvas.height/2 - player.size/2, player.y));
+        }
+
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw bounds indicator (subtle)
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(bounds.x, bounds.y, canvas.width - 2*bounds.x, canvas.height - 2*bounds.y);
+
+            // Draw player (red square)
+            ctx.fillStyle = '#f53';
+            ctx.fillRect(player.x - player.size/2, player.y - player.size/2, player.size, player.size);
+
+            // Draw camera (blue square in center)
+            ctx.fillStyle = '#28f';
+            const cameraSize = 42;
+            ctx.fillRect(canvas.width/2 - cameraSize/2, canvas.height/2 - cameraSize/2, cameraSize, cameraSize);
+        }
+
+        let lastTime = 0;
+        function gameLoop(currentTime) {
+            const deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            update(deltaTime);
+            draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the game
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

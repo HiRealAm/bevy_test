@@ -18,14 +18,19 @@ The start script automatically handles display setup and ensures the proper envi
 
 On first startup, Codespaces runs `.devcontainer/post-create.sh`, which installs native Linux dependencies for Bevy, writes a proxy-friendly Cargo config, and prefetches Rust crates.
 
-## What this example includes
+## Web Demo
 
-- A windowed Bevy app (`Bevy Example Project`)
-- A simple controllable player square
-- Keyboard movement (`WASD` or arrow keys)
-- Movement bounds so the player stays on screen
+A web-based version of the Bevy app is available as `web-demo.html`. This demonstrates the game mechanics running in a browser canvas.
 
-If no display server is available (`DISPLAY`/`WAYLAND_DISPLAY` unset), the app automatically runs in one-shot headless mode so the terminal command still succeeds.
+To view it:
+1. Open `web-demo.html` in VS Code
+2. Right-click in the file and select "Open with Live Server" (if Live Preview extension is installed)
+3. Or use a local server: `python3 -m http.server 8000` and open `http://localhost:8000/web-demo.html`
+
+The web demo includes:
+- Interactive player movement with WASD/arrow keys
+- Boundary constraints
+- Canvas-based rendering
 
 ## Proxy support
 
