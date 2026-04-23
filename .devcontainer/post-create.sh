@@ -7,13 +7,19 @@ sudo apt-get install -y --no-install-recommends \
   libudev-dev \
   libasound2-dev \
   libxkbcommon-dev \
+  libxkbcommon-x11-0 \
   libwayland-dev \
   libx11-dev \
   libxi-dev \
   libxcursor-dev \
   libxrandr-dev \
   libxinerama-dev \
-  libgl1-mesa-dev
+  libgl1-mesa-dev \
+  xvfb
+
+# Install latest Rust using rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source ~/.cargo/env
 
 mkdir -p "${HOME}/.cargo"
 
@@ -47,5 +53,9 @@ protocol = "git"
 index = "https://github.com/rust-lang/crates.io-index"
 TOML
 fi
+
+# Start Xvfb for display support
+Xvfb :99 -screen 0 1024x768x24 &
+export DISPLAY=:99
 
 cargo fetch --locked || cargo fetch

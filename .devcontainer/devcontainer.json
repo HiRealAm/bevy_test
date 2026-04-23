@@ -9,7 +9,8 @@
     }
   },
   "remoteEnv": {
-    "CARGO_NET_GIT_FETCH_WITH_CLI": "true"
+    "CARGO_NET_GIT_FETCH_WITH_CLI": "true",
+    "DISPLAY": ":99"
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
