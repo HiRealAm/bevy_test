@@ -2,52 +2,58 @@
 
 Starter Bevy example project prepared for GitHub Codespaces.
 
-## Run
+## Quick Start
+
+Run the all-in-one setup script:
 
 ```bash
-cargo run
+./setup.sh
 ```
 
-Or use the provided start script:
+This will:
+- Install all dependencies
+- Build the project
+- Start the web demo server
+- Provide access URLs
 
-```bash
-./scripts/start.sh
-```
+## What this example includes
 
-The start script automatically handles display setup and ensures the proper environment for running the Bevy app.
-
-On first startup, Codespaces runs `.devcontainer/post-create.sh`, which installs native Linux dependencies for Bevy, writes a proxy-friendly Cargo config, and prefetches Rust crates.
+- A windowed Bevy app (`Bevy Example Project`)
+- A simple controllable player square
+- Keyboard movement (`WASD` or arrow keys)
+- Movement bounds so the player stays on screen
 
 ## Web Demo
 
-A web-based version of the Bevy app is available as `web-demo.html`. This demonstrates the game mechanics running in a browser canvas.
+The web demo runs automatically and is available at:
+**`https://[codespace-name]-8000.app.github.dev/`**
 
-In GitHub Codespaces, the web demo is automatically served at:
-**https://[codespace-name]-8000.app.github.dev/**
-
-To view it:
-1. Open the forwarded port notification in VS Code
-2. Or navigate to the URL above (replace [codespace-name] with your codespace name)
-3. Use WASD or arrow keys to control the player
-
-The web demo includes:
+Features:
 - Interactive player movement with WASD/arrow keys
 - Boundary constraints
 - Canvas-based rendering
 
-## Proxy support
+## Manual Options
 
-If your environment requires a proxy, set these in your Codespace (or VS Code terminal):
+If you prefer manual control:
 
 ```bash
-export HTTPS_PROXY=http://proxy-host:port
-export HTTP_PROXY=http://proxy-host:port
+# Setup environment only
+./setup.sh 1
+
+# Run native Bevy app
+./setup.sh 2
+
+# Start web server only
+./setup.sh 3
+
+# Open web demo in browser
+./setup.sh 4
 ```
 
-If your company provides a Cargo registry mirror, set it before running the setup script:
+## Devcontainer
 
-```bash
-export CARGO_REGISTRY_MIRROR=sparse+https://<your-artifactory-or-mirror>/
+The project includes a devcontainer configuration that automatically sets up the full environment when creating a new codespace.
 ```
 
 - With `CARGO_REGISTRY_MIRROR` set, the setup script configures Cargo to use that mirror.
