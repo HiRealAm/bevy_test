@@ -1,8 +1,0 @@
-[build]
-target = "index.html"
-dist = "dist"
-
-[[hooks]]
-stage = "pre_build"
-command = "echo"
-command_arguments = ["Building Bevy web app..."]
