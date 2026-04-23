@@ -58,4 +58,9 @@ fi
 Xvfb :99 -screen 0 1024x768x24 &
 export DISPLAY=:99
 
+# Start web server for demo
+cd /workspaces/bevy_test
+python3 -m http.server 8000 &
+echo "Web demo available at: https://$CODESPACE_NAME-8000.app.github.dev/"
+
 cargo fetch --locked || cargo fetch

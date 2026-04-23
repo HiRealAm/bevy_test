@@ -22,10 +22,13 @@ On first startup, Codespaces runs `.devcontainer/post-create.sh`, which installs
 
 A web-based version of the Bevy app is available as `web-demo.html`. This demonstrates the game mechanics running in a browser canvas.
 
+In GitHub Codespaces, the web demo is automatically served at:
+**https://[codespace-name]-8000.app.github.dev/**
+
 To view it:
-1. Open `web-demo.html` in VS Code
-2. Right-click in the file and select "Open with Live Server" (if Live Preview extension is installed)
-3. Or use a local server: `python3 -m http.server 8000` and open `http://localhost:8000/web-demo.html`
+1. Open the forwarded port notification in VS Code
+2. Or navigate to the URL above (replace [codespace-name] with your codespace name)
+3. Use WASD or arrow keys to control the player
 
 The web demo includes:
 - Interactive player movement with WASD/arrow keys

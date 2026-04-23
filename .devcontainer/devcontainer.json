@@ -12,7 +12,15 @@
     "CARGO_NET_GIT_FETCH_WITH_CLI": "true",
     "DISPLAY": ":99"
   },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Web Demo",
+      "onAutoForward": "notify"
+    }
+  },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
+  },
   "customizations": {
     "vscode": {
       "extensions": [
